@@ -1,0 +1,10 @@
+15:15:31.788 [main] DEBUG org.testng.TestNG - suiteXmlPath: "D:\ShubhamJadhav\Selenium\Opencart\master.xml"
+15:16:20.152 [main] DEBUG org.testng.TestNG - suiteXmlPath: "D:\ShubhamJadhav\Selenium\Opencart\master.xml"
+15:16:23.104 [main] INFO  testCases.TC001_AccountRegestrationTest - ***** Starting TC001_AccountRegestrationTest *****
+15:16:23.290 [main] INFO  testCases.TC001_AccountRegestrationTest - Clicked on MyAccount Link 
+15:16:23.811 [main] INFO  testCases.TC001_AccountRegestrationTest - Clicked on Regester Link 
+15:16:23.814 [main] INFO  testCases.TC001_AccountRegestrationTest - Providing cutomer details....  
+15:16:25.635 [main] INFO  testCases.TC001_AccountRegestrationTest - Validating expected message.... 
+15:16:25.704 [main] INFO  testCases.TC001_AccountRegestrationTest - ***** finished TC001_AccountRegestrationTest *****
+15:16:28.092 [main] INFO  testCases.TC002_LoginTest - ***** Starting TC002_LoginTest *****
+15:16:29.970 [main] INFO  testCases.TC002_LoginTest - ***** Finished TC002_LoginTest *****
