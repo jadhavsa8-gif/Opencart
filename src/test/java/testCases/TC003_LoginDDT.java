@@ -20,18 +20,18 @@ public class TC003_LoginDDT extends BaseClass{
 		try {
 			
 		//HomePage
-		HomePage hp = new HomePage(driver);
+		HomePage hp = new HomePage(getDriver());
 		hp.clickMyAcount();
 		hp.clickLogin();
 		
 		//Login
-		LoginPage lp = new LoginPage(driver);
+		LoginPage lp = new LoginPage(getDriver());
 		lp.setEmail(emial);
 		lp.setPassword(pwd);
 		lp.clickLogin();
 		
 		//MyAccount
-		MyAccountPage mcc = new MyAccountPage(driver);
+		MyAccountPage mcc = new MyAccountPage(getDriver());
 		boolean target = mcc.isMyAccountPageExists();
 		
 		//Data is Valid - login success - test pass  -logout

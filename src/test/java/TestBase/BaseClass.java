@@ -27,9 +27,15 @@ import org.testng.annotations.Parameters;
 
 public class BaseClass {
 	
-public static WebDriver driver;
+	
+private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+
 public Logger logger;
 public Properties p;
+
+public WebDriver getDriver() {
+    return driver.get();
+}
 	
 	
 	@BeforeClass(groups= {"Sanity","Regression","Master"})
@@ -37,6 +43,8 @@ public Properties p;
 	public void setup(String os,String br ) throws IOException 
 	{ 
 		//LOADING config.properties
+		
+		
 		
 		FileReader file = new FileReader("./src//test//resources//config.properties");
 		p= new Properties();
@@ -61,47 +69,35 @@ public Properties p;
 			{
 				capabilities.setPlatform(Platform.MAC);
 			}
-			else
-			{
-				System.out.println("No Matching os");
-				return;
-			}
-			
-			//browser
-			switch(br.toLowerCase())
-			 {
-				case "chrome" : capabilities.setBrowserName("chrome"); break;
-				case "edge" : capabilities.setBrowserName("MicrosoftEdge");break;
-				case "firefox" : capabilities.setBrowserName("firefox");break;
-				default : System.out.println("No Matching browser");return;
-			}
-			
-			driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"),capabilities);
-			
-		}
-		if(p.getProperty("execution_env").equalsIgnoreCase("local")) 
-		{
-			switch(br.toLowerCase())
-		    {
-			case "chrome" : driver = new ChromeDriver(); break;
-			case "edge" : driver= new EdgeDriver() ;break;
-			case "firefox" : driver = new FirefoxDriver(); break;
-			default : System.out.println("Invalid browser name..");return;
-			}
-		}
+
+            capabilities.setBrowserName(br.toLowerCase());
+
+            driver.set(new RemoteWebDriver(
+                    new URL("http://localhost:4444/wd/hub"), capabilities));
+        }
+
+        else {
+            switch (br.toLowerCase()) {
+                case "chrome": driver.set(new ChromeDriver()); break;
+                case "edge": driver.set(new EdgeDriver()); break;
+                case "firefox": driver.set(new FirefoxDriver()); break;
+            }
+        }
+
+        getDriver().manage().deleteAllCookies();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        getDriver().get(p.getProperty("appURL1"));
+        getDriver().manage().window().maximize();
+    }
+
 		
 		
-		//driver = new ChromeDriver();
-		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.get(p.getProperty("appURL1"));  //reading url from property file
-		driver.manage().window().maximize();
-	}
 	
 	@AfterClass(groups= {"Sanity","Regression","Master"})
 	public void tearDown() 
 	{
-		driver.quit();
+		  getDriver().quit();
+	        driver.remove();
 		
 	}
 	
@@ -130,7 +126,7 @@ public Properties p;
 		
 		String timeStamp = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
 		 
-		TakesScreenshot takesScreenshot =(TakesScreenshot) driver;
+		TakesScreenshot takesScreenshot =(TakesScreenshot) getDriver();;
 		File sourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
 		
 		String targetFilePath=System.getProperty("user.dir")+"\\screenshots\\"+ tname +"_"+timeStamp+".png";
